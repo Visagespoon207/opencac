@@ -1,7 +1,0 @@
-## Summary
-
-## Changes
-
-## Testing
-
-## Risks

